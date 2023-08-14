@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { items } from "./api/Questions";
 import "./App.css";
 import { motion } from "framer-motion";
@@ -48,7 +48,9 @@ function App() {
                {questionId ? (
                   items.map(
                      (item) =>
-                        questionId === item.id && <h2>{item.question}</h2>
+                        questionId === item.id && (
+                           <h2 key={item.id}>{item.question}</h2>
+                        )
                   )
                ) : (
                   <h2>
@@ -62,13 +64,16 @@ function App() {
                {items.map(
                   (item) =>
                      questionId === item.id && (
-                        <>
+                        <React.Fragment key={item.id}>
                            <div className="grid-column-1">
                               {item.answers.map((answer) => {
                                  return (
                                     answer.order <=
                                        Math.ceil(item.answers.length / 2) && (
-                                       <div className="answer-item">
+                                       <div
+                                          className="answer-item"
+                                          key={answer.order}
+                                       >
                                           <div>{answer.order}</div>
                                           <motion.div
                                              className="hide-answer"
@@ -98,7 +103,10 @@ function App() {
                                  return (
                                     answer.order >
                                        Math.ceil(item.answers.length / 2) && (
-                                       <div className="answer-item">
+                                       <div
+                                          className="answer-item"
+                                          key={answer.order}
+                                       >
                                           <div>{answer.order}</div>
                                           <motion.div
                                              className="hide-answer"
@@ -123,14 +131,14 @@ function App() {
                                  );
                               })}
                            </div>
-                        </>
+                        </React.Fragment>
                      )
                )}
             </div>
 
             <div className="nope-count">
                {[...Array(nopeCount)].map((nope, index) => (
-                  <img key={index} src={NopeImg} />
+                  <img key={`${nope}-${index}`} src={NopeImg} />
                ))}
             </div>
 
